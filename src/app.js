@@ -3,6 +3,7 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import getCharacters from './routes/characters.routes.js';
 import planetRoutes from './routes/planet.routes.js';
+import getLogs from './routes/log.routes.js';
 import errorHandler from './middlewares/errorHandler.js';
 import { logMiddleware } from './middlewares/logger.js';
 
@@ -17,6 +18,8 @@ app.use(logMiddleware);
 
 app.use('/api/characters', getCharacters);
 app.use('/api/planets', planetRoutes);
+app.use('/api/logs', getLogs);
+
 app.use((req, res, next) => {
 	res.status(404).json({ error: 'Ruta no encontrada' });
 });
