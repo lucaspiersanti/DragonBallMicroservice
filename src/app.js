@@ -13,14 +13,17 @@ app.use(express.json());
 
 connectDB();
 
-app.use(logMiddleware)
+app.use(logMiddleware);
+
+app.use('/api/characters', getCharacters);
+app.use('/api/planets', planetRoutes);
+app.use((req, res, next) => {
+	res.status(404).json({ error: 'Ruta no encontrada' });
+});
 
 // app.use('/', (req, res) => {
 // 	res.send('API Dragon Ball funcionando...');
 // });
-
-app.use('/api/characters', getCharacters);
-app.use('/api/planets', planetRoutes);
 
 app.use(errorHandler);
 

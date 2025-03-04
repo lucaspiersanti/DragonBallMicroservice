@@ -1,19 +1,20 @@
-import axios from 'axios';
 import {
 	findByPlanetId,
 	savePlanet,
 } from '../repositories/planet.repository.js';
-
-const API_URL = 'http://dragonball-api.com/api';
+import { logger } from '../middlewares/logger.js';
+import { dragonBallApi } from '../utils/apiClientFactory.js';
 
 const fetchPlanetFromApi = async (planetId) => {
 	try {
-		const response = await axios.get(`${API_URL}/planets/${planetId}`);
-		console.info(`[Info]: ${JSON.stringify(response.data, null, 2)}`);
+		logger.debug(`Fetching planet whit id: ${planetId}`);
+		const response = await dragonBallApi.get(`/planets/${planetId}`);
+		logger.debug(`Planet found: ${JSON.stringify(response.data.name)}`);
 		return response.data;
 	} catch (error) {
-		console.error(`Error obteniendo planeta ${planetId}`, error.message);
-		throw new Error('No se pudo obtener el planeta de la API externa');
+		throw new Error(
+			`Error en API externa: No se pudo obtener el planeta: ${error.message}`,
+		);
 	}
 };
 

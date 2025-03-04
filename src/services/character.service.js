@@ -1,15 +1,16 @@
-import axios from 'axios';
-
-const API_URL = 'http://dragonball-api.com/api';
+import { logger } from '../middlewares/logger.js';
+import { dragonBallApi } from '../utils/apiClientFactory.js';
 
 export const fetchCharacters = async (filters) => {
 	try {
-		const response = await axios.get(`${API_URL}/characters`, {
+		logger.debug(`Fetching characters with filter: ${JSON.stringify(filters)}`);
+		const response = await dragonBallApi.get(`/characters`, {
 			params: filters,
 		});
+		logger.debug(`Characters found: ${response.data.items.length}`);
 		return response.data;
 	} catch (error) {
-		console.error('❌ Error obteniendo personajes:', error.message);
+		logger.error(`Error in character service: ${error.message}`);
 		throw new Error('No se pudo obtener la lista de personajes.');
 	}
 };
